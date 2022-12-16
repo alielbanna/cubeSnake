@@ -1,4 +1,4 @@
-# cube_snake
+# Cube Snake
 
 A new Flutter project.
 
