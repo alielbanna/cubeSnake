@@ -27,11 +27,18 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    player.resume();
     player.setPlayerMode(PlayerMode.lowLatency);
     player.play(AssetSource('audio/myAudio.mp3'));
     player.setReleaseMode(ReleaseMode.loop);
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    player.stop();
+    super.dispose();
   }
 
   @override
@@ -51,6 +58,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
                 color: Colors.white,
                 fontSize: 30.0,
                 //fontWeight: FontWeight.bold,
+                fontFamily: 'Rubik Spray Paint',
               ),
             ),
             Stack(
@@ -62,6 +70,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
                     color: Colors.white,
                     fontSize: 105.0,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Rubik Spray Paint',
                   ),
                 ),
                 Text(
@@ -69,7 +78,8 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
                   style: TextStyle(
                     color: Colors.amber,
                     fontSize: 100.0,
-                    fontWeight: FontWeight.bold,
+                    //fontWeight: FontWeight.bold,
+                    fontFamily: 'Rubik Spray Paint',
                   ),
                 ),
               ],
@@ -79,10 +89,11 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const GamePage()),
-                );
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const GamePage(),
+                    ),
+                    (Route<dynamic> route) => false);
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -92,7 +103,8 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 50.0,
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
+                      fontFamily: 'Rubik Spray Paint',
                     ),
                   ),
                   Icon(
@@ -115,7 +127,8 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
+                      fontFamily: 'Rubik Spray Paint',
                     ),
                   ),
                   Icon(

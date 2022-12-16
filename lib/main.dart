@@ -1,6 +1,5 @@
 import 'package:cube_snake/welcome_page.dart';
 import 'package:flutter/material.dart';
-import 'game.dart';
 
 void main() {
   runApp(const MyApp());

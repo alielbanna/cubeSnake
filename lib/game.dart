@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cube_snake/control_panel.dart';
 import 'package:cube_snake/direction.dart';
 import 'package:cube_snake/piece.dart';
@@ -13,7 +14,7 @@ class GamePage extends StatefulWidget {
   State<GamePage> createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _GamePageState extends State<GamePage> with WidgetsBindingObserver {
   late int upperBoundX, upperBoundY, lowerBoundX, lowerBoundY;
   late double screenWidth, screenHeight;
   int step = 20;
@@ -26,7 +27,19 @@ class _GamePageState extends State<GamePage> {
   Direction direction = Direction.right;
   Timer? timer;
 
-  // AudioPlayer player = AudioPlayer();
+  AudioPlayer player = AudioPlayer();
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      player.stop();
+    } else if (state == AppLifecycleState.resumed) {
+      player.play(AssetSource('audio/myAudio.mp3'));
+    } else {
+      print(state.toString());
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   void changeSpeed() {
     if (timer != null && timer!.isActive) {
@@ -69,10 +82,15 @@ class _GamePageState extends State<GamePage> {
   void initState() {
     super.initState();
     restart();
+    player.setPlayerMode(PlayerMode.lowLatency);
+    player.play(AssetSource('audio/myAudio.mp3'));
+    player.setReleaseMode(ReleaseMode.loop);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    player.dispose();
     super.dispose();
   }
 
@@ -172,10 +190,11 @@ class _GamePageState extends State<GamePage> {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const WelcomePage()),
-                );
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const WelcomePage(),
+                    ),
+                    (Route<dynamic> route) => false);
               },
               child: const Text(
                 'BACK TO MAIN MENU',
